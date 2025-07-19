@@ -1,7 +1,7 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Create customers table
+-- Create customers table FIRST (since other tables reference it)
 CREATE TABLE customers (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE customers (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create quote_requests table (NEW)
+-- Create quote_requests table (for customer-submitted requests)
 CREATE TABLE quote_requests (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
@@ -29,7 +29,7 @@ CREATE TABLE quote_requests (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create quotes table (existing - for admin-created quotes)
+-- Create quotes table (for admin-created quotes)
 CREATE TABLE quotes (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
@@ -75,3 +75,8 @@ CREATE TRIGGER update_quotes_updated_at BEFORE UPDATE ON quotes
 -- ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
 -- ALTER TABLE quote_requests ENABLE ROW LEVEL SECURITY;
 -- ALTER TABLE quotes ENABLE ROW LEVEL SECURITY;
+
+-- Insert some sample data for testing (optional)
+-- INSERT INTO customers (name, email, phone, company) VALUES 
+-- ('John Doe', 'john@example.com', '555-0123', 'Example Corp'),
+-- ('Jane Smith', 'jane@example.com', '555-0456', 'Smith Industries');

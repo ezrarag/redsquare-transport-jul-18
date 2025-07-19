@@ -3,14 +3,15 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { CustomerList } from "@/components/admin/customer-list"
 import { QuoteForm } from "@/components/admin/quote-form"
 import { QuoteList } from "@/components/admin/quote-list"
+import { QuoteRequestList } from "@/components/admin/quote-request-list"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Customer } from "@/types/database"
 
 export default function AdminPage() {
@@ -18,7 +19,6 @@ export default function AdminPage() {
   const [password, setPassword] = useState("")
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
-  const router = useRouter()
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -69,26 +69,43 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage customers and quotes</p>
+          <p className="text-gray-600 mt-2">Manage customers, quote requests, and quotes</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-8">
-            {selectedCustomer ? (
-              <QuoteForm
-                customer={selectedCustomer}
-                onQuoteCreated={handleQuoteCreated}
-                onCancel={() => setSelectedCustomer(null)}
-              />
-            ) : (
-              <CustomerList onSelectCustomer={setSelectedCustomer} />
-            )}
-          </div>
+        <Tabs defaultValue="quote-requests" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="quote-requests">Quote Requests</TabsTrigger>
+            <TabsTrigger value="customers">Customers & Quotes</TabsTrigger>
+            <TabsTrigger value="quotes">Admin Quotes</TabsTrigger>
+          </TabsList>
 
-          <div>
+          <TabsContent value="quote-requests">
+            <QuoteRequestList key={refreshKey} />
+          </TabsContent>
+
+          <TabsContent value="customers" className="space-y-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                {selectedCustomer ? (
+                  <QuoteForm
+                    customer={selectedCustomer}
+                    onQuoteCreated={handleQuoteCreated}
+                    onCancel={() => setSelectedCustomer(null)}
+                  />
+                ) : (
+                  <CustomerList onSelectCustomer={setSelectedCustomer} />
+                )}
+              </div>
+              <div>
+                <QuoteList key={refreshKey} />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="quotes">
             <QuoteList key={refreshKey} />
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )

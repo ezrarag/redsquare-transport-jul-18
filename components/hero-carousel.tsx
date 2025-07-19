@@ -66,13 +66,26 @@ export function HeroCarousel({ slides, currentSlide, onSlideChange }: HeroCarous
           }}
           className="absolute inset-0 h-full w-full"
           style={{
-            backgroundImage: `url(${slides[currentSlide]?.backgroundImage})`,
             backgroundColor: slides[currentSlide]?.backgroundColor || "#1a1a1a",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
           }}
         >
+          {/* Video or Image Background */}
+          {slides[currentSlide]?.backgroundVideo ? (
+            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+              <source src={slides[currentSlide].backgroundVideo} type="video/mp4" />
+            </video>
+          ) : slides[currentSlide]?.backgroundImage ? (
+            <div
+              className="absolute inset-0 w-full h-full"
+              style={{
+                backgroundImage: `url(${slides[currentSlide].backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+          ) : null}
+
           {/* Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/30" />
 

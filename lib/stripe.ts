@@ -5,10 +5,11 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 })
 
 export const createCheckoutSession = async (
-  quoteId: string,
+  id: string,
   amount: number,
   customerEmail: string,
   serviceDescription: string,
+  type: "quote" | "quote_request" = "quote",
 ) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -30,7 +31,8 @@ export const createCheckoutSession = async (
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/cancel`,
     customer_email: customerEmail,
     metadata: {
-      quote_id: quoteId,
+      [type === "quote_request" ? "quote_request_id" : "quote_id"]: id,
+      type: type,
     },
   })
 
