@@ -1,32 +1,45 @@
 import Link from "next/link"
-import { CheckCircle, MapPin } from "lucide-react"
+import { CheckCircle, Globe, MapPin, ChevronDown, Package, Clock, Shield, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-export default function ServicesPage() {
+export default function Services() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-red-600 rounded-sm"></div>
-            <Link href="/">
-              <span className="text-xl font-bold">Red Square Transport</span>
-            </Link>
-          </div>
-          <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link href="/services" className="text-sm font-medium text-foreground">
-              Services
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              About Us
-            </Link>
-            <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Contact
-            </Link>
-          </nav>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <div className="h-8 w-8 bg-red-600 rounded-sm"></div>
+                <span className="text-xl font-bold">Red Square Transport</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              <DropdownMenuItem asChild>
+                <Link href="/" className="w-full">
+                  Home
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/services" className="w-full">
+                  Services
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/about" className="w-full">
+                  About Us
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/contact" className="w-full">
+                  Contact
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div>
             <Link href="/quote">
               <Button>Request a Quote</Button>
@@ -39,9 +52,10 @@ export default function ServicesPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Our Services</h1>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">Our Services</h1>
                 <p className="max-w-[900px] text-white/90 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Comprehensive logistics and transportation solutions tailored to your business needs.
+                  Comprehensive logistics and transportation solutions designed to meet your business needs with
+                  reliability, efficiency, and professionalism.
                 </p>
               </div>
             </div>
@@ -59,43 +73,35 @@ export default function ServicesPage() {
                   Reliable Freight Transportation
                 </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Our modern fleet and experienced drivers ensure your goods arrive safely and on time, every time.
+                  Our modern fleet and experienced drivers ensure your cargo reaches its destination safely and on time,
+                  every time.
                 </p>
-                <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-4 pt-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Full truckload (FTL) shipping</span>
+                    <span className="font-medium">Full Truckload (FTL)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Less than truckload (LTL) shipping</span>
+                    <span className="font-medium">Less Than Truckload (LTL)</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Expedited shipping options</span>
+                    <span className="font-medium">Expedited Shipping</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Temperature-controlled transportation</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Nationwide coverage</span>
+                    <span className="font-medium">Temperature Controlled</span>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="/quote">
-                    <Button>Request a Quote</Button>
-                  </Link>
-                  <Link href="/contact">
-                    <Button variant="outline">Contact Us</Button>
-                  </Link>
-                </div>
+                <Link href="/quote">
+                  <Button className="mt-4">Get Freight Quote</Button>
+                </Link>
               </div>
               <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted">
                 <img
                   src="/placeholder.svg?height=400&width=600"
-                  alt="Freight truck on highway"
+                  alt="Freight truck at loading dock"
                   className="object-cover w-full h-full"
                 />
               </div>
@@ -106,54 +112,56 @@ export default function ServicesPage() {
         <section id="logistics" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-              <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted order-2 lg:order-1">
+              <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted">
                 <img
                   src="/placeholder.svg?height=400&width=600"
-                  alt="Logistics planning and supply chain"
+                  alt="Logistics planning and warehouse management"
                   className="object-cover w-full h-full"
                 />
               </div>
-              <div className="space-y-4 order-1 lg:order-2">
+              <div className="space-y-4">
                 <div className="inline-block rounded-lg bg-red-100 px-3 py-1 text-sm text-red-600">
                   Logistics Planning
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Optimize Your Supply Chain
+                  Strategic Supply Chain Solutions
                 </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Our logistics experts help you streamline operations, reduce costs, and improve efficiency across your
-                  entire supply chain.
+                  Optimize your supply chain with our comprehensive logistics planning services designed to reduce costs
+                  and improve efficiency.
                 </p>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Supply chain optimization</span>
+                <div className="grid grid-cols-1 gap-4 pt-4">
+                  <div className="flex items-start gap-3">
+                    <Globe className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Route Optimization</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Advanced routing algorithms to minimize transit times and costs
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Route planning and optimization</span>
+                  <div className="flex items-start gap-3">
+                    <Package className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Inventory Management</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Real-time tracking and automated inventory solutions
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Inventory management</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Logistics consulting</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Real-time tracking and reporting</span>
+                  <div className="flex items-start gap-3">
+                    <Clock className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Just-in-Time Delivery</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Precise timing to reduce storage costs and improve cash flow
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="/quote">
-                    <Button>Request a Quote</Button>
-                  </Link>
-                  <Link href="/contact">
-                    <Button variant="outline">Contact Us</Button>
-                  </Link>
-                </div>
+                <Link href="/contact">
+                  <Button className="mt-4">Discuss Your Needs</Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -168,47 +176,110 @@ export default function ServicesPage() {
                   Secure Storage Solutions
                 </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Our state-of-the-art warehousing facilities provide secure storage with comprehensive inventory
-                  management and distribution services.
+                  State-of-the-art warehousing facilities with advanced security systems and climate control for all
+                  your storage needs.
                 </p>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Short and long-term storage</span>
+                <div className="grid grid-cols-1 gap-4 pt-4">
+                  <div className="flex items-start gap-3">
+                    <Shield className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">24/7 Security</h4>
+                      <p className="text-sm text-muted-foreground">Advanced surveillance and access control systems</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Climate-controlled facilities</span>
+                  <div className="flex items-start gap-3">
+                    <Package className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Climate Control</h4>
+                      <p className="text-sm text-muted-foreground">Temperature and humidity controlled environments</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Inventory management systems</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Order fulfillment services</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-red-600" />
-                    <span>Cross-docking capabilities</span>
+                  <div className="flex items-start gap-3">
+                    <Users className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Dedicated Staff</h4>
+                      <p className="text-sm text-muted-foreground">Professional warehouse management and handling</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="/quote">
-                    <Button>Request a Quote</Button>
-                  </Link>
-                  <Link href="/contact">
-                    <Button variant="outline">Contact Us</Button>
-                  </Link>
-                </div>
+                <Link href="/quote">
+                  <Button className="mt-4">Get Storage Quote</Button>
+                </Link>
               </div>
               <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted">
                 <img
                   src="/placeholder.svg?height=400&width=600"
-                  alt="Modern warehouse with inventory"
+                  alt="Modern warehouse storage facility"
                   className="object-cover w-full h-full"
                 />
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Additional Services</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  We offer a comprehensive range of specialized services to meet all your logistics needs.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-red-600" />
+                    Same-Day Delivery
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Urgent shipments delivered within hours across major metropolitan areas with real-time tracking.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-red-600" />
+                    White Glove Service
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Premium handling for high-value, fragile, or specialized items requiring extra care and attention.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Globe className="h-5 w-5 text-red-600" />
+                    Cross-Docking
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Efficient transfer of goods from inbound to outbound transportation with minimal storage time.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Package className="h-5 w-5 text-red-600" />
+                    Packaging Services
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Professional packaging and crating services to ensure your goods are protected during transit.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -219,7 +290,7 @@ export default function ServicesPage() {
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Ready to Get Started?</h2>
                 <p className="max-w-[900px] text-white/90 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Let us help you streamline your logistics operations and reduce costs.
+                  Contact us today to discuss your logistics needs and get a customized quote for our services.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -229,7 +300,11 @@ export default function ServicesPage() {
                   </Button>
                 </Link>
                 <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/10 bg-transparent"
+                  >
                     Contact Us
                   </Button>
                 </Link>

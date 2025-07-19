@@ -1,33 +1,45 @@
 import Link from "next/link"
-import { CheckCircle, MapPin } from "lucide-react"
+import { CheckCircle, Users, Award, Target, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-export default function AboutPage() {
+export default function About() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 bg-red-600 rounded-sm"></div>
-            <Link href="/">
-              <span className="text-xl font-bold">Red Square Transport</span>
-            </Link>
-          </div>
-          <nav className="hidden md:flex gap-6">
-            <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Home
-            </Link>
-            <Link href="/services" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Services
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-foreground">
-              About Us
-            </Link>
-            <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Contact
-            </Link>
-          </nav>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <div className="h-8 w-8 bg-red-600 rounded-sm"></div>
+                <span className="text-xl font-bold">Red Square Transport</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              <DropdownMenuItem asChild>
+                <Link href="/" className="w-full">
+                  Home
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/services" className="w-full">
+                  Services
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/about" className="w-full">
+                  About Us
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/contact" className="w-full">
+                  Contact
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div>
             <Link href="/quote">
               <Button>Request a Quote</Button>
@@ -40,9 +52,12 @@ export default function AboutPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">About Us</h1>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+                  About Red Square Transport
+                </h1>
                 <p className="max-w-[900px] text-white/90 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Learn more about Red Square Transport and our commitment to excellence in logistics.
+                  Building trust through reliable logistics solutions since 2008. We're committed to excellence in every
+                  delivery.
                 </p>
               </div>
             </div>
@@ -55,20 +70,20 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="inline-block rounded-lg bg-red-100 px-3 py-1 text-sm text-red-600">Our Story</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  Building Excellence in Transportation
+                  15+ Years of Excellence in Logistics
                 </h2>
                 <p className="text-muted-foreground md:text-xl">
-                  Founded in 2008, Red Square Transport began with a simple mission: to provide reliable, efficient, and
-                  professional logistics services to businesses of all sizes.
+                  Founded in 2008 by industry veterans, Red Square Transport began with a simple mission: to provide
+                  reliable, efficient, and professional logistics services that businesses can depend on.
                 </p>
                 <p className="text-muted-foreground">
-                  What started with just three trucks and a small warehouse has grown into a nationwide operation with a
-                  modern fleet of over 150 vehicles, multiple warehousing facilities, and a team of logistics experts
-                  dedicated to helping our clients succeed.
+                  What started as a small regional carrier has grown into a nationwide logistics provider, serving over
+                  500 clients across 48 states. Our success is built on the foundation of trust, reliability, and an
+                  unwavering commitment to customer satisfaction.
                 </p>
                 <p className="text-muted-foreground">
-                  Throughout our growth, we've maintained our commitment to personalized service, reliability, and
-                  innovation, making us a trusted partner for businesses across industries.
+                  Today, we operate a modern fleet of over 150 vehicles and maintain state-of-the-art warehousing
+                  facilities, all while staying true to our core values of integrity, excellence, and innovation.
                 </p>
               </div>
               <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted">
@@ -84,160 +99,54 @@ export default function AboutPage() {
 
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Mission & Values</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  The principles that guide everything we do at Red Square Transport.
+                  We're driven by a clear mission and guided by strong values that shape everything we do.
                 </p>
               </div>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto rounded-full bg-red-100 p-3 w-fit">
+                    <Target className="h-8 w-8 text-red-600" />
+                  </div>
+                  <CardTitle>Our Mission</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    To provide exceptional logistics solutions that enable our clients to focus on their core business
+                    while we handle their transportation and supply chain needs with precision and care.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto rounded-full bg-red-100 p-3 w-fit">
                     <CheckCircle className="h-8 w-8 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-bold">Reliability</h3>
+                  <CardTitle>Reliability</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-muted-foreground">
-                    We deliver on our promises, ensuring your goods arrive safely and on time, every time.
+                    We understand that your business depends on timely deliveries. Our 99.8% on-time delivery rate
+                    reflects our commitment to keeping your operations running smoothly.
                   </p>
                 </CardContent>
               </Card>
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-red-600"
-                    >
-                      <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
-                      <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
-                    </svg>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto rounded-full bg-red-100 p-3 w-fit">
+                    <Award className="h-8 w-8 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-bold">Communication</h3>
+                  <CardTitle>Excellence</CardTitle>
+                </CardHeader>
+                <CardContent>
                   <p className="text-muted-foreground">
-                    We believe in transparent, proactive communication with our clients at every step.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-red-600"
-                    >
-                      <path d="M12 2v4" />
-                      <path d="m4.93 4.93 2.83 2.83" />
-                      <path d="M2 12h4" />
-                      <path d="m4.93 19.07 2.83-2.83" />
-                      <path d="M12 18v4" />
-                      <path d="m19.07 19.07-2.83-2.83" />
-                      <path d="M18 12h4" />
-                      <path d="m19.07 4.93-2.83 2.83" />
-                      <path d="M12 6a6 6 0 0 0 0 12 6 6 0 0 0 0-12Z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">Innovation</h3>
-                  <p className="text-muted-foreground">
-                    We continuously seek new ways to improve our services and provide more value to our clients.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-red-600"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">Partnership</h3>
-                  <p className="text-muted-foreground">
-                    We see ourselves as an extension of your team, working together to achieve your business goals.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-red-600"
-                    >
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                      <path d="m9 12 2 2 4-4" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">Safety</h3>
-                  <p className="text-muted-foreground">
-                    We prioritize the safety of our team, your goods, and everyone on the road.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card className="border-2 hover:border-red-600 transition-all">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                  <div className="rounded-full bg-red-100 p-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-red-600"
-                    >
-                      <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
-                      <path d="M13 5v2" />
-                      <path d="M13 17v2" />
-                      <path d="M13 11v2" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold">Sustainability</h3>
-                  <p className="text-muted-foreground">
-                    We're committed to reducing our environmental impact through efficient operations and modern
-                    equipment.
+                    We continuously invest in technology, training, and equipment to ensure we deliver the highest
+                    quality service in the industry.
                   </p>
                 </CardContent>
               </Card>
@@ -247,64 +156,108 @@ export default function AboutPage() {
 
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Our Leadership Team</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Leadership Team</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Meet the experienced professionals guiding Red Square Transport.
+                  Meet the experienced professionals who lead Red Square Transport with vision and expertise.
                 </p>
               </div>
             </div>
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative h-40 w-40 overflow-hidden rounded-full">
-                  <img
-                    src="/placeholder.svg?height=160&width=160"
-                    alt="CEO portrait"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Rich Grey</h3>
-                  <p className="text-red-600 font-medium">Chief Executive Officer</p>
-                  <p className="text-muted-foreground mt-2">
-                    With over 25 years in the logistics industry, Rich founded Red Square Transport with a vision to
-                    create a company that prioritizes reliability and customer service.
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-xl">
+                    MJ
+                  </div>
+                  <CardTitle>Michael Johnson</CardTitle>
+                  <p className="text-sm text-muted-foreground">Chief Executive Officer</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">
+                    With over 20 years in logistics, Michael founded Red Square Transport with a vision to revolutionize
+                    freight transportation through technology and exceptional service.
                   </p>
-                </div>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-xl">
+                    ST
+                  </div>
+                  <CardTitle>Sarah Thompson</CardTitle>
+                  <p className="text-sm text-muted-foreground">Chief Operations Officer</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">
+                    Sarah brings 18 years of operational excellence to Red Square Transport, ensuring our fleet operates
+                    at peak efficiency while maintaining the highest safety standards.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-xl">
+                    RC
+                  </div>
+                  <CardTitle>Robert Chen</CardTitle>
+                  <p className="text-sm text-muted-foreground">Chief Technology Officer</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm">
+                    Robert leads our technology initiatives, implementing cutting-edge solutions for route optimization,
+                    real-time tracking, and supply chain management.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+              <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-muted">
+                <img
+                  src="/placeholder.svg?height=400&width=600"
+                  alt="Red Square Transport facility"
+                  className="object-cover w-full h-full"
+                />
               </div>
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative h-40 w-40 overflow-hidden rounded-full">
-                  <img
-                    src="/placeholder.svg?height=160&width=160"
-                    alt="COO portrait"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Reggie Transport</h3>
-                  <p className="text-red-600 font-medium">Chief Operations Officer</p>
-                  <p className="text-muted-foreground mt-2">
-                    Reggie brings 18 years of supply chain expertise to Red Square Transport, overseeing all operational
-                    aspects to ensure maximum efficiency and client satisfaction.
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="relative h-40 w-40 overflow-hidden rounded-full">
-                  <img
-                    src="/placeholder.svg?height=160&width=160"
-                    alt="CTO portrait"
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Auntie Redsquare</h3>
-                  <p className="text-red-600 font-medium">Chief Technology Officer</p>
-                  <p className="text-muted-foreground mt-2">
-                    Auntie leads our technology initiatives, implementing cutting-edge solutions that enhance tracking,
-                    reporting, and overall logistics efficiency.
-                  </p>
+              <div className="space-y-4">
+                <div className="inline-block rounded-lg bg-red-100 px-3 py-1 text-sm text-red-600">Why Choose Us</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">What Sets Us Apart</h2>
+                <p className="text-muted-foreground md:text-xl">
+                  Our commitment to excellence goes beyond just moving freight. We're your strategic logistics partner.
+                </p>
+                <div className="grid grid-cols-1 gap-4 pt-4">
+                  <div className="flex items-start gap-3">
+                    <Users className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Dedicated Account Management</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Personal account managers who understand your business and provide tailored solutions
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Award className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Industry Recognition</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Award-winning service recognized by industry associations and client testimonials
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="h-6 w-6 text-red-600 mt-1" />
+                    <div>
+                      <h4 className="font-medium">Proven Track Record</h4>
+                      <p className="text-sm text-muted-foreground">
+                        15+ years of consistent growth and customer satisfaction in the logistics industry
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -315,9 +268,11 @@ export default function AboutPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Ready to Work With Us?</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">
+                  Ready to Partner With Us?
+                </h2>
                 <p className="max-w-[900px] text-white/90 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Let's discuss how Red Square Transport can help your business succeed.
+                  Join the hundreds of businesses that trust Red Square Transport with their logistics needs.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -327,7 +282,11 @@ export default function AboutPage() {
                   </Button>
                 </Link>
                 <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-white hover:bg-white/10 bg-transparent"
+                  >
                     Contact Us
                   </Button>
                 </Link>
@@ -352,7 +311,7 @@ export default function AboutPage() {
               <h4 className="font-medium">Company</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/about" className="text-sm text-muted-foregroun hover:text-foreground">
+                  <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground">
                     About Us
                   </Link>
                 </li>
@@ -392,7 +351,21 @@ export default function AboutPage() {
               <h4 className="font-medium">Contact</h4>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-muted-foreground"
+                  >
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
                   <span className="text-sm text-muted-foreground">123 Logistics Way, Transport City, TC 12345</span>
                 </li>
                 <li className="flex items-center gap-2">

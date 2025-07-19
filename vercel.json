@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "app/api/webhooks/stripe/route.ts": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin"
+    }
+  ]
+}
