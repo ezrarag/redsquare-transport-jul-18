@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Loader2, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -36,6 +36,23 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null)
+  const [pickupSuggestions, setPickupSuggestions] = useState<any[]>([])
+  const [dropoffSuggestions, setDropoffSuggestions] = useState<any[]>([])
+  const [showPickupDropdown, setShowPickupDropdown] = useState(false)
+  const [showDropoffDropdown, setShowDropoffDropdown] = useState(false)
+  const pickupRef = useRef<HTMLInputElement>(null)
+  const dropoffRef = useRef<HTMLInputElement>(null)
+
+  // Fetch city suggestions
+  const fetchCities = async (q: string, setSuggestions: (cities: any[]) => void) => {
+    if (!q) {
+      setSuggestions([])
+      return
+    }
+    const res = await fetch(`/api/cities?q=${encodeURIComponent(q)}`)
+    const data = await res.json()
+    setSuggestions(data.cities || [])
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -213,28 +230,87 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                       />
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="space-y-2 relative">
                       <Label htmlFor="pickup_location">Pickup Location *</Label>
                       <Input
                         id="pickup_location"
                         name="pickup_location"
                         value={formData.pickup_location}
-                        onChange={handleChange}
+                        onChange={e => {
+                          handleChange(e)
+                          fetchCities(e.target.value, setPickupSuggestions)
+                          setShowPickupDropdown(true)
+                        }}
+                        onFocus={() => {
+                          if (formData.pickup_location) fetchCities(formData.pickup_location, setPickupSuggestions)
+                          setShowPickupDropdown(true)
+                        }}
+                        onBlur={() => setTimeout(() => setShowPickupDropdown(false), 100)}
+                        autoComplete="off"
                         required
+                        ref={pickupRef}
                         className="border-gray-200 focus:border-red-500 focus:ring-red-500"
                       />
+                      {showPickupDropdown && pickupSuggestions.length > 0 && (
+                        <div className="absolute z-10 bg-white border rounded shadow w-full mt-1 max-h-48 overflow-y-auto">
+                          {pickupSuggestions.map(city => (
+                            <div
+                              key={city.id}
+                              className={`px-3 py-2 cursor-pointer flex justify-between items-center ${city.available ? "hover:bg-red-100" : "text-gray-400 bg-gray-50 cursor-not-allowed"}`}
+                              onMouseDown={() => {
+                                if (city.available) {
+                                  setFormData({ ...formData, pickup_location: `${city.name}, ${city.state}` })
+                                  setShowPickupDropdown(false)
+                                }
+                              }}
+                            >
+                              <span>{city.name}, {city.state}</span>
+                              {!city.available && <span className="text-xs ml-2">Unavailable</span>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-
-                    <div className="space-y-2">
+                    <div className="space-y-2 relative">
                       <Label htmlFor="dropoff_location">Dropoff Location *</Label>
                       <Input
                         id="dropoff_location"
                         name="dropoff_location"
                         value={formData.dropoff_location}
-                        onChange={handleChange}
+                        onChange={e => {
+                          handleChange(e)
+                          fetchCities(e.target.value, setDropoffSuggestions)
+                          setShowDropoffDropdown(true)
+                        }}
+                        onFocus={() => {
+                          if (formData.dropoff_location) fetchCities(formData.dropoff_location, setDropoffSuggestions)
+                          setShowDropoffDropdown(true)
+                        }}
+                        onBlur={() => setTimeout(() => setShowDropoffDropdown(false), 100)}
+                        autoComplete="off"
                         required
+                        ref={dropoffRef}
                         className="border-gray-200 focus:border-red-500 focus:ring-red-500"
                       />
+                      {showDropoffDropdown && dropoffSuggestions.length > 0 && (
+                        <div className="absolute z-10 bg-white border rounded shadow w-full mt-1 max-h-48 overflow-y-auto">
+                          {dropoffSuggestions.map(city => (
+                            <div
+                              key={city.id}
+                              className={`px-3 py-2 cursor-pointer flex justify-between items-center ${city.available ? "hover:bg-red-100" : "text-gray-400 bg-gray-50 cursor-not-allowed"}`}
+                              onMouseDown={() => {
+                                if (city.available) {
+                                  setFormData({ ...formData, dropoff_location: `${city.name}, ${city.state}` })
+                                  setShowDropoffDropdown(false)
+                                }
+                              }}
+                            >
+                              <span>{city.name}, {city.state}</span>
+                              {!city.available && <span className="text-xs ml-2">Unavailable</span>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">
