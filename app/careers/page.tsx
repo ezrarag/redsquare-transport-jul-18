@@ -1,174 +1,406 @@
 "use client"
-import React, { useRef } from "react"
-import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
 
-// Color palette from screenshots
-const PINK = "#ECA7F7"
-const NEON = "#B6FF5C"
-const DEEP_GREEN = "#0B3C2D"
-const NEON_BG = "#C6FF7F"
-
-const coreValues = [
-  {
-    icon: (
-      <svg width="96" height="96" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="48" fill={NEON}/><path d="M24 48c0-13.255 10.745-24 24-24s24 10.745 24 24" stroke={DEEP_GREEN} strokeWidth="4" strokeLinecap="round" strokeDasharray="8 8"/></svg>
-    ),
-    title: "Planet First, Profit Follows",
-    desc: "We prioritise planet well-being in every decision, making sustainable choices for a greener tomorrow and long-term profitability.",
-  },
-  {
-    icon: (
-      <svg width="96" height="96" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="48" fill={NEON}/><circle cx="48" cy="48" r="24" fill={DEEP_GREEN}/><path d="M48 24v48M24 48h48" stroke={NEON} strokeWidth="4"/></svg>
-    ),
-    title: "Thrive Together",
-    desc: "We ensure that everyone is nurtured, valued and empowered. We cultivate an ecosystem where you bloom.",
-  },
-  {
-    icon: (
-      <svg width="96" height="96" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="48" fill={NEON}/><rect x="32" y="32" width="32" height="32" rx="8" fill={DEEP_GREEN}/><circle cx="48" cy="48" r="8" fill={NEON}/></svg>
-    ),
-    title: "Exceptional Craftsmanship",
-    desc: "We believe in high quality solutions crafted with precision and excellence that respect your investment.",
-  },
-  {
-    icon: (
-      <svg width="96" height="96" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="48" fill={NEON}/><path d="M48 16a32 32 0 1 1-32 32" stroke={DEEP_GREEN} strokeWidth="8" strokeLinecap="round"/></svg>
-    ),
-    title: "Forever Evolving",
-    desc: "We never stand still, committed to pushing boundaries, always at the forefront of change.",
-  },
-]
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { FullScreenMenu } from '@/components/full-screen-menu'
 
 export default function CareersPage() {
-  const [jobs, setJobs] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const joinRef = useRef<HTMLDivElement>(null)
-  const coreRef = useRef<HTMLDivElement>(null)
-  const jobsRef = useRef<HTMLDivElement>(null)
-  const sections = [heroRef, joinRef, coreRef, jobsRef]
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentSection, setCurrentSection] = useState(0)
 
+  const sections = [
+    { id: 'hero', title: 'Hero' },
+    { id: 'join-us', title: 'Join Us' },
+    { id: 'core-values', title: 'Core Values' },
+    { id: 'current-positions', title: 'Current Positions' }
+  ]
+
+  // Handle scroll to update current section
   useEffect(() => {
-    async function fetchJobs() {
-      setLoading(true)
-      const { data, error } = await supabase.from("jobs").select("*").order("posted_at", { ascending: false })
-      if (!error) setJobs(data || [])
-      setLoading(false)
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 2
+      
+      sections.forEach((section, index) => {
+        const element = document.getElementById(section.id)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const elementTop = rect.top + window.scrollY
+          const elementBottom = elementTop + rect.height
+          
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            setCurrentSection(index)
+          }
+        }
+      })
     }
-    fetchJobs()
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Smooth scroll handler
-  const scrollToSection = (idx: number) => {
-    sections[idx]?.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
   return (
-    <main className="relative w-full min-h-screen bg-white overflow-x-hidden font-sans">
-      {/* Logo top left */}
-      <div className="fixed top-6 left-6 z-50">
-        <div className="w-12 h-12 rounded-full bg-[#B6FF5C] flex items-center justify-center">
-          {/* Placeholder logo */}
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill={DEEP_GREEN}/><path d="M8 20c2-4 6-8 8-8s6 4 8 8" stroke={NEON} strokeWidth="2"/></svg>
-        </div>
-      </div>
-      {/* Menu top right */}
-      <div className="fixed top-6 right-6 z-50">
-        <button className="bg-white rounded-full px-6 py-2 text-lg font-medium shadow border border-[#B6FF5C] text-[#0B3C2D]">Menu +</button>
-      </div>
-      {/* Contact badge bottom right */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <div className="rounded-full bg-[#B6FF5C] px-4 py-2 text-[#0B3C2D] font-bold text-sm border-2 border-[#0B3C2D] rotate-[-15deg]">Contact Us →</div>
-      </div>
-      {/* Slider/Scroll Nav bottom left */}
-      <div className="fixed left-6 bottom-6 z-50 flex flex-col items-center gap-2">
-        {sections.map((ref, idx) => (
-          <button
-            key={idx}
-            onClick={() => scrollToSection(idx)}
-            className={`w-4 h-4 rounded-full border-2 ${idx === 0 ? 'bg-[#B6FF5C]' : 'bg-white'} border-[#B6FF5C] transition-colors`}
-            aria-label={`Go to section ${idx + 1}`}
-          />
-        ))}
-        <svg width="24" height="24" fill="none" className="mt-2 animate-bounce"><path d="M6 9l6 6 6-6" stroke={NEON} strokeWidth="2"/></svg>
-      </div>
+    <div className="relative">
+      {/* Menu button - same as home page */}
+      <motion.button
+        onClick={() => setIsMenuOpen(true)}
+        className="fixed top-6 right-6 z-50 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 text-sm font-medium text-gray-900 hover:bg-white transition-colors shadow-lg"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        Menu +
+      </motion.button>
 
-      {/* Hero Section */}
-      <div ref={heroRef} style={{ background: PINK }} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden pb-24">
-        <h1 className="text-[clamp(3rem,10vw,8rem)] font-bold text-center" style={{ color: NEON, lineHeight: 1.1, marginTop: '3rem' }}>
-          Grow Your<br />Career
-        </h1>
-        {/* Group photo placeholder */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-0 flex justify-center z-10">
-          <img src="/placeholder-user.jpg" alt="Team" className="rounded-2xl shadow-xl w-[420px] h-[320px] object-cover border-8 border-white" />
-        </div>
-      </div>
+      {/* Full Screen Menu */}
+      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-      {/* Join Us Section */}
-      <div ref={joinRef} className="w-full min-h-screen flex flex-col justify-center items-center relative py-24 border-t-8 border-[#0B3C2D] bg-white">
-        <div className="w-full max-w-5xl mx-auto rounded-3xl overflow-hidden flex flex-col items-center border-8 border-[#0B3C2D]">
-          {/* Video placeholder */}
-          <div className="w-full aspect-video bg-gray-200 flex items-center justify-center">
-            {/* Replace with <video> or iframe as needed */}
-            <span className="text-gray-400 text-2xl">[Video Placeholder]</span>
+      {/* First Section - Hero */}
+      <section className="min-h-screen bg-pink-400 relative overflow-hidden" id="hero">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute bottom-20 left-20 w-64 h-64 border-2 border-lime-400 rounded-full opacity-20"></div>
+          <div className="absolute bottom-40 right-40 w-32 h-32 border border-lime-400 rounded-full opacity-30"></div>
+          <div className="absolute top-1/2 left-10 w-20 h-20 border border-lime-400 transform rotate-45 opacity-20"></div>
+        </div>
+
+        {/* Header */}
+        <header className="relative z-10 flex justify-between items-center p-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-lime-400 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-pink-400 rounded-full"></div>
+            </div>
+            <span className="text-lime-400 font-bold text-lg">Logo</span>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-6">
+          {/* Team Photo */}
+          <div className="relative max-w-4xl mx-auto flex justify-center items-center">
+            <div className="relative">
+              <Image
+                src="https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/careers-page/pexels-rdne-7464721.jpg"
+                alt="Team Photo"
+                width={700}
+                height={500}
+                className="rounded-3xl shadow-xl"
+              />
+              {/* Overlapping text and button */}
+              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+                  Join Our Team
+                </h2>
+                <button className="bg-lime-400 text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-lime-300 transition-colors shadow-lg">
+                  Apply Now
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Remove the old call to action since it's now on the card */}
+          {/* <div className="mt-4 text-center">
+            <button className="bg-lime-400 text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-lime-300 transition-colors shadow-lg">
+              Join Our Team
+            </button>
+          </div> */}
+        </main>
+
+        {/* Floating Contact Button */}
+        <div className="fixed bottom-6 right-6 z-30">
+          <div className="relative flex items-center justify-center">
+            <div className="absolute inset-0 bg-lime-400 rounded-full animate-ping opacity-20"></div>
+            <button className="relative bg-lime-400 w-32 h-32 rounded-full flex items-center justify-center shadow-lg hover:bg-lime-300 transition-colors">
+              <svg className="absolute w-28 h-28 animate-spin-slow" viewBox="0 0 100 100">
+                <defs>
+                  <path id="circlePath" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0" />
+                </defs>
+                <text fontSize="12" fill="#222">
+                  <textPath xlinkHref="#circlePath">Contact Us • Contact Us • Contact Us • </textPath>
+                </text>
+              </svg>
+              <span className="relative z-10 text-black font-bold text-lg">→</span>
+            </button>
           </div>
         </div>
+      </section>
+
+      {/* Second Section - Join Us Here */}
+      <section className="min-h-screen relative overflow-hidden" id="join-us">
+        {/* Background with blur and gradient overlay */}
+        <div className="absolute inset-0">
+          {/* Blurred background image */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-purple-500 to-pink-400 opacity-80"></div>
+          {/* Video placeholder in the middle */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-[950px] h-[650px] bg-gray-800 rounded-3xl flex items-center justify-center text-white text-2xl shadow-2xl">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+                Video Placeholder
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* "Join Us" text overlay - moved to bottom */}
+        <div className="relative z-10 flex items-end justify-center min-h-screen pb-20">
+          <h2 className="text-8xl md:text-9xl font-bold text-lime-400 leading-none">
+            Join Us
+          </h2>
+        </div>
+      </section>
+
+      {/* Left Sidebar - Scroll Indicator & Navigation */}
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center space-y-4">
+        {/* Navigation dots */}
+        <div className="flex flex-col space-y-3">
+          {sections.map((section, index) => (
+            <motion.button
+              key={index}
+              onClick={() => {
+                setCurrentSection(index)
+                document.getElementById(sections[index].id)?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className="flex items-center space-x-3 group"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
+                index === currentSection
+                  ? "bg-lime-400 border-lime-400 scale-125"
+                  : "bg-transparent border-lime-400/60 hover:border-lime-400 hover:scale-110"
+              }`}
+              />
+              <span className={`text-sm font-medium transition-all duration-300 ${
+                index === currentSection
+                  ? "text-lime-400 opacity-0"
+                  : "text-lime-400/60 opacity-0 group-hover:opacity-100"
+              }`}>
+                {section.title}
+              </span>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="mt-8 flex flex-col items-center text-lime-400/60"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        >
+          <div className="w-px h-12 bg-lime-400/30 mb-2" />
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5z"/>
+          </svg>
+        </motion.div>
       </div>
 
       {/* Core Values Section */}
-      <div ref={coreRef} style={{ background: DEEP_GREEN }} className="w-full min-h-screen flex flex-col justify-center items-center py-24">
-        <h2 className="text-5xl font-bold mb-16 text-center" style={{ color: NEON }}>Core Values</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24 w-full max-w-6xl">
-          {coreValues.map((val, idx) => (
-            <div key={idx} className="flex flex-col md:flex-row items-center text-left p-8 rounded-2xl gap-8" style={{ background: "rgba(255,255,255,0.01)" }}>
-              <div className="flex-shrink-0">{val.icon}</div>
+      <section id="core-values" className="min-h-screen bg-green-900 relative overflow-hidden">
+        {/* Header */}
+        <header className="relative z-10 flex justify-between items-center p-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-lime-400 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-green-900 rounded-full"></div>
+            </div>
+            <span className="text-lime-400 font-bold text-lg">Logo</span>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-4">
+          <h2 className="text-lime-400 text-5xl font-bold mb-16 text-center">Core Values</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl w-full">
+            {/* Value 1 - Planet First */}
+            <div className="flex items-center space-x-6">
+              <div className="flex-shrink-0">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="48" fill="#A3E635" />
+                    {/* Latitude lines */}
+                    <path d="M10 30 Q50 30 90 30" stroke="#14532D" strokeWidth="2" fill="none" opacity="0.7"/>
+                    <path d="M10 50 Q50 50 90 50" stroke="#14532D" strokeWidth="2" fill="none" opacity="0.7"/>
+                    <path d="M10 70 Q50 70 90 70" stroke="#14532D" strokeWidth="2" fill="none" opacity="0.7"/>
+                    {/* Simplified landmasses */}
+                    <path d="M25 35 Q35 25 45 35 Q55 45 65 35 Q75 25 85 35" fill="#14532D" opacity="0.5"/>
+                    <path d="M20 55 Q30 45 40 55 Q50 65 60 55 Q70 45 80 55" fill="#14532D" opacity="0.5"/>
+                  </svg>
+                </motion.div>
+              </div>
               <div>
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: NEON }}>{val.title}</h3>
-                <p className="text-lg text-[#B6FF5C]/80 max-w-xs">{val.desc}</p>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Planet First, Profit Follows</h3>
+                <p className="text-lime-400 text-base">We prioritise planet well-being in every decision, making sustainable choices for a greener tomorrow and long-term profitability.</p>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Current Positions Section */}
-      <div ref={jobsRef} style={{ background: DEEP_GREEN }} className="w-full min-h-screen flex flex-col justify-center items-center py-24 border-t border-[#B6FF5C]">
-        <h2 className="text-5xl font-bold mb-12 text-left w-full max-w-5xl" style={{ color: NEON }}>Current Positions</h2>
-        <div className="w-full max-w-5xl border-t border-[#B6FF5C]">
-          {loading ? (
-            <div className="text-left text-[#B6FF5C] py-8">Loading jobs...</div>
-          ) : jobs.length === 0 ? (
-            <div className="text-left text-[#B6FF5C] py-8">No current job openings</div>
-          ) : (
-            <ul className="space-y-8 py-8">
-              {jobs.map((job) => (
-                <li key={job.id} className="bg-[#123C2D] rounded-xl p-8 shadow-lg border border-[#B6FF5C]/20">
-                  <h3 className="text-2xl font-bold mb-2 text-[#B6FF5C]">{job.title}</h3>
-                  <p className="text-lg text-[#B6FF5C]/80 mb-2">{job.location} • {job.employment_type}</p>
-                  <p className="text-base text-[#B6FF5C]/70 mb-4">{job.description}</p>
-                  <button className="mt-2 px-6 py-2 rounded-full bg-[#B6FF5C] text-[#0B3C2D] font-semibold hover:bg-[#d0ffb0] transition">Apply</button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
+            {/* Value 2 - Thrive Together */}
+            <div className="flex items-center space-x-6">
+              <div className="flex-shrink-0">
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="48" fill="#A3E635" />
+                    {/* Interconnected blobs */}
+                    <circle cx="35" cy="35" r="8" fill="#14532D" opacity="0.7"/>
+                    <circle cx="65" cy="35" r="8" fill="#14532D" opacity="0.7"/>
+                    <circle cx="35" cy="65" r="8" fill="#14532D" opacity="0.7"/>
+                    <circle cx="65" cy="65" r="8" fill="#14532D" opacity="0.7"/>
+                    <circle cx="50" cy="50" r="8" fill="#14532D" opacity="0.7"/>
+                    {/* Connection lines */}
+                    <path d="M35 35 L50 50 L65 35" stroke="#14532D" strokeWidth="2" opacity="0.5"/>
+                    <path d="M35 35 L50 50 L35 65" stroke="#14532D" strokeWidth="2" opacity="0.5"/>
+                    <path d="M65 35 L50 50 L65 65" stroke="#14532D" strokeWidth="2" opacity="0.5"/>
+                    <path d="M35 65 L50 50 L65 65" stroke="#14532D" strokeWidth="2" opacity="0.5"/>
+                  </svg>
+                </motion.div>
+              </div>
+              <div>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Thrive Together</h3>
+                <p className="text-lime-400 text-base">We ensure that everyone is nurtured, valued and empowered. We cultivate an ecosystem where you bloom.</p>
+              </div>
+            </div>
 
-      {/* Footer */}
-      <footer style={{ background: NEON_BG }} className="w-full py-12 flex flex-col items-center text-[#0B3C2D] border-t border-[#B6FF5C]">
-        <form className="flex gap-2 mb-4 w-full max-w-md border-b border-[#0B3C2D] pb-2">
-          <input type="email" placeholder="your email" className="flex-1 bg-transparent px-4 py-2 text-lg outline-none" />
-          <button type="submit" className="px-4 py-2 text-2xl font-bold">→</button>
-        </form>
-        <div className="mb-2 text-sm">info@brightbiotech.co.uk</div>
-        <div className="mb-2 text-xs">Rutherford House Unit 16 Pencroft Way, Manchester, England, M15 6SZ</div>
-        <div className="flex gap-4 mt-2">
-          <a href="#" aria-label="Instagram" className="hover:opacity-80"><svg width="32" height="32" fill="none" stroke={DEEP_GREEN} strokeWidth="2"><circle cx="16" cy="16" r="15" /></svg></a>
-          <a href="#" aria-label="LinkedIn" className="hover:opacity-80"><svg width="32" height="32" fill="none" stroke={DEEP_GREEN} strokeWidth="2"><rect x="6" y="6" width="20" height="20" rx="4" /></svg></a>
+            {/* Value 3 - Exceptional Craftsmanship */}
+            <div className="flex items-center space-x-6">
+              <div className="flex-shrink-0 relative">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 90, 180, 270, 360]
+                  }}
+                  transition={{ 
+                    duration: 8, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                >
+                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="48" fill="#A3E635" />
+                    {/* Geometric shapes */}
+                    <rect x="30" y="30" width="12" height="12" fill="#14532D" opacity="0.7"/>
+                    <circle cx="70" cy="35" r="6" fill="#14532D" opacity="0.7"/>
+                    <polygon points="35,70 45,60 55,70" fill="#14532D" opacity="0.7"/>
+                    <rect x="60" y="60" width="15" height="15" fill="#14532D" opacity="0.7"/>
+                  </svg>
+                </motion.div>
+                {/* Navigation dots and arrow */}
+                <div className="absolute -left-8 top-1/2 transform -translate-y-1/2 flex flex-col items-center space-y-2">
+                  <motion.div
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-2 h-2 bg-lime-400 rounded-full"
+                  />
+                  <motion.div
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    className="w-2 h-2 bg-lime-400 rounded-full"
+                  />
+                  <motion.div
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="w-2 h-2 bg-lime-400 rounded-full"
+                  />
+                  <motion.div
+                    animate={{ y: [0, 5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="mt-2"
+                  >
+                    <svg className="w-4 h-4 text-lime-400" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M7 10l5 5 5-5z"/>
+                    </svg>
+                  </motion.div>
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Exceptional Craftsmanship</h3>
+                <p className="text-lime-400 text-base">We believe in high quality biotech solutions crafted with precision and excellence that respect your investment.</p>
+              </div>
+            </div>
+
+            {/* Value 4 - Forever Evolving */}
+            <div className="flex items-center space-x-6">
+              <div className="flex-shrink-0">
+                <motion.div
+                  animate={{ 
+                    rotate: [0, 360]
+                  }}
+                  transition={{ 
+                    duration: 12, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                  }}
+                >
+                  <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="48" fill="#A3E635" />
+                    {/* Progress segment */}
+                    <path d="M50 50 L50 2 A48 48 0 0 1 98 50 Z" fill="#14532D" opacity="0.7"/>
+                  </svg>
+                </motion.div>
+              </div>
+              <div>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Forever Evolving</h3>
+                <p className="text-lime-400 text-base">We never stand still, committed to pushing boundaries, always at the forefront of change.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="mt-4 text-xs">Copyright © 2025 Your Data Terms and Conditions<br/>Design by Lyon & Lyon</div>
-      </footer>
-    </main>
+      </section>
+
+      {/* Fourth Section - Current Positions */}
+      <section id="current-positions" className="min-h-screen bg-green-900 relative overflow-hidden">
+        {/* Header */}
+        <header className="relative z-10 flex justify-between items-center p-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-lime-400 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-green-900 rounded-full"></div>
+            </div>
+            <span className="text-lime-400 font-bold text-lg">Logo</span>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-4">
+          {/* Title */}
+          <div className="text-center mb-12">
+            <h2 className="text-6xl md:text-8xl font-bold text-lime-400 leading-tight">
+              Current
+              <br />
+              Positions
+            </h2>
+          </div>
+
+          {/* No Current Openings Message */}
+          <div className="text-center">
+            <div className="relative">
+              {/* Top line */}
+              <div className="w-64 h-px bg-lime-400 mx-auto mb-4"></div>
+              
+              {/* Message */}
+              <p className="text-lime-400 text-xl font-medium">
+                No current job openings
+              </p>
+              
+              {/* Bottom line */}
+              <div className="w-64 h-px bg-lime-400 mx-auto mt-4"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 } 
