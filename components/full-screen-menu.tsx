@@ -194,8 +194,8 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
 
           {/* Logo */}
           <div className="absolute top-6 left-6 flex items-center gap-2">
-            <div className="h-8 w-8 bg-green-800 rounded-sm"></div>
-            <span className="text-xl font-bold text-green-800">bright biotech</span>
+            <div className="h-8 w-8 bg-red-800 rounded-sm"></div>
+            <span className="text-xl font-bold text-green-800">redsquare transport</span>
           </div>
 
           {/* Main content container */}

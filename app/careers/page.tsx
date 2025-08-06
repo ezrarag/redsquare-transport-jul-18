@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { FullScreenMenu } from '@/components/full-screen-menu'
+import { ContactModal } from '@/components/contact-modal'
 
 export default function CareersPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [currentSection, setCurrentSection] = useState(0)
 
   const sections = [
@@ -54,6 +56,9 @@ export default function CareersPage() {
       {/* Full Screen Menu */}
       <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
+      {/* Contact Modal */}
+      <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
+
       {/* First Section - Hero */}
       <section className="min-h-screen bg-pink-400 relative overflow-hidden" id="hero">
         {/* Background decorative elements */}
@@ -90,7 +95,10 @@ export default function CareersPage() {
                 <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">
                   Join Our Team
                 </h2>
-                <button className="bg-lime-400 text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-lime-300 transition-colors shadow-lg">
+                <button 
+                  className="bg-lime-400 text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-lime-300 transition-colors shadow-lg"
+                  onClick={() => setIsContactModalOpen(true)}
+                >
                   Apply Now
                 </button>
               </div>
@@ -109,7 +117,7 @@ export default function CareersPage() {
         <div className="fixed bottom-6 right-6 z-30">
           <div className="relative flex items-center justify-center">
             <div className="absolute inset-0 bg-lime-400 rounded-full animate-ping opacity-20"></div>
-            <button className="relative bg-lime-400 w-32 h-32 rounded-full flex items-center justify-center shadow-lg hover:bg-lime-300 transition-colors">
+            <button className="relative bg-lime-400 w-32 h-32 rounded-full flex items-center justify-center shadow-lg hover:bg-lime-300 transition-colors" onClick={() => setIsContactModalOpen(true)}>
               <svg className="absolute w-28 h-28 animate-spin-slow" viewBox="0 0 100 100">
                 <defs>
                   <path id="circlePath" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0" />
@@ -235,8 +243,8 @@ export default function CareersPage() {
                 </motion.div>
               </div>
               <div>
-                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Planet First, Profit Follows</h3>
-                <p className="text-lime-400 text-base">We prioritise planet well-being in every decision, making sustainable choices for a greener tomorrow and long-term profitability.</p>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Reliability Above All</h3>
+                <p className="text-lime-400 text-base">We deliver on time, every time. Our clients trust us because we treat every shipment as a priority, ensuring dependable service from quote to delivery.</p>
               </div>
             </div>
 
@@ -271,8 +279,8 @@ export default function CareersPage() {
                 </motion.div>
               </div>
               <div>
-                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Thrive Together</h3>
-                <p className="text-lime-400 text-base">We ensure that everyone is nurtured, valued and empowered. We cultivate an ecosystem where you bloom.</p>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Customer-Centered Service</h3>
+                <p className="text-lime-400 text-base">Every job starts with understanding our customers’ needs. From fast quotes to transparent tracking and support, we make logistics simple and stress-free.</p>
               </div>
             </div>
 
@@ -327,8 +335,8 @@ export default function CareersPage() {
                 </div>
               </div>
               <div>
-                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Exceptional Craftsmanship</h3>
-                <p className="text-lime-400 text-base">We believe in high quality biotech solutions crafted with precision and excellence that respect your investment.</p>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Innovation in Motion</h3>
+                <p className="text-lime-400 text-base">We leverage modern tools and strategies to optimize routes, streamline operations, and reduce costs — giving our customers the edge they need.</p>
               </div>
             </div>
 
@@ -353,8 +361,9 @@ export default function CareersPage() {
                 </motion.div>
               </div>
               <div>
-                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Forever Evolving</h3>
-                <p className="text-lime-400 text-base">We never stand still, committed to pushing boundaries, always at the forefront of change.</p>
+                <h3 className="text-lime-400 text-2xl font-semibold mb-2">Integrity & Professionalism</h3>
+                <p className="text-lime-400 text-base">Our team is committed to honest communication, fair pricing, and maintaining the highest standards at every step of the process.
+                </p>
               </div>
             </div>
           </div>
