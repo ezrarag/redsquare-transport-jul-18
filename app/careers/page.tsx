@@ -84,7 +84,7 @@ export default function CareersPage() {
           <div className="relative max-w-4xl mx-auto flex justify-center items-center">
             <div className="relative">
               <Image
-                src="https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/careers-page/pexels-rdne-7464721.jpg"
+                src="https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2Fpexels-tima-miroshnichenko-6169054.jpg?alt=media&token=7c3939b1-b32c-4fe7-a317-f58c414b6a49"
                 alt="Team Photo"
                 width={700}
                 height={500}

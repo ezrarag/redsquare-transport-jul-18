@@ -15,7 +15,7 @@ const slides: CarouselSlide[] = [
     title: "Reliable Logistics Solutions",
     subtitle: "Professional shipping and freight services nationwide",
     backgroundVideo:
-      "https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/homepage-carousel/6169114-uhd_3840_2160_25fps.mp4",
+      "https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2F6169116-uhd_3840_2160_25fps.mp4?alt=media&token=091436a0-91ee-4228-9e18-b9a7dd83ee2f",
     backgroundColor: "#dc2626",
     textColor: "#ffffff",
   },

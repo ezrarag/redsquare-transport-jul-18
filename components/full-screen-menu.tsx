@@ -17,12 +17,12 @@ const menuItems = [
     illustration: "home"
   },
   { 
-    label: "Technology & Products", 
+    label: "Services", 
     href: "/services",
     illustration: "tech"
   },
   { 
-    label: "Mission & Team", 
+    label: "About", 
     href: "/about",
     illustration: "mission"
   },
@@ -77,7 +77,7 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
               {/* Glass bottle */}
               <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
                 <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">bright biotech</div>
+                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">red square</div>
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-purple-800 rounded-full opacity-60"></div>
               </div>
               {/* Leaf shapes */}
@@ -93,7 +93,7 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
               {/* Tech bottle */}
               <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
                 <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">innovative tech</div>
+                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">transoirtation</div>
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-blue-800 rounded-full opacity-60"></div>
               </div>
               {/* Circuit patterns */}
