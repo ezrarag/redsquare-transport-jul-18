@@ -69,106 +69,15 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
   }
 
   const getIllustration = (type: string) => {
-    switch (type) {
-      case 'home':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Glass bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">red square</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-purple-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Leaf shapes */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-green-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-green-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      case 'tech':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Tech bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">transoirtation</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-blue-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Circuit patterns */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-blue-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-blue-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      case 'mission':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Mission bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">our mission</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-orange-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Team shapes */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-orange-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-orange-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      case 'careers':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Careers bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">join us</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-pink-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Growth shapes */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-pink-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-pink-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      case 'info':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Info bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">learn more</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-teal-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Info shapes */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-teal-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-teal-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      case 'contact':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="relative">
-              {/* Contact bottle */}
-              <div className="w-32 h-48 bg-white/20 rounded-t-full border-2 border-green-800 relative">
-                <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-green-800 rounded-full"></div>
-                <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-green-800 text-sm font-bold">get in touch</div>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-8 bg-indigo-800 rounded-full opacity-60"></div>
-              </div>
-              {/* Contact shapes */}
-              <div className="absolute -top-4 -left-8 w-16 h-20 bg-indigo-800 rounded-full transform rotate-45 opacity-60"></div>
-              <div className="absolute -bottom-4 -right-8 w-20 h-16 bg-indigo-800 rounded-full transform -rotate-12 opacity-60"></div>
-            </div>
-          </div>
-        )
-      default:
-        return null
-    }
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <img 
+          src="https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2Fpexels-ron-lach-9594428.jpg?alt=media&token=0b2fd6cc-1ef7-46c0-b526-c6d4c3d39ef6"
+          alt="Transportation illustration"
+          className="w-full h-full object-cover rounded-lg"
+        />
+      </div>
+    )
   }
 
   return (
@@ -180,7 +89,7 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
           animate="open"
           exit="closed"
           transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="fixed inset-0 z-[100] bg-[#99FF33]"
+          className="fixed inset-0 z-[100] bg-[#BBFD6A]"
         >
           {/* Close button */}
           <motion.button
@@ -199,7 +108,7 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
           </div>
 
           {/* Main content container */}
-          <div className="flex items-center justify-center h-full px-12">
+          <div className="flex items-center justify-center h-full px-8">
             {/* Left side - Illustration */}
             <div className="flex-1 flex items-center justify-center">
               <motion.div
@@ -207,15 +116,15 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
-                className="w-64 h-64"
+                className="w-80 h-80"
               >
                 {getIllustration(hoveredItem || 'home')}
               </motion.div>
             </div>
 
             {/* Right side - Menu items */}
-            <div className="flex-1 flex items-center justify-center">
-              <nav className="text-center">
+            <div className="flex-1 flex items-center justify-center pl-8">
+              <nav className="text-left">
                 {menuItems.map((item, index) => (
                   <motion.div
                     key={item.href}
@@ -227,14 +136,14 @@ export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
                       delay: index * 0.1,
                       ease: [0.25, 0.46, 0.45, 0.94],
                     }}
-                    className="mb-6"
+                    className="mb-2"
                     onMouseEnter={() => setHoveredItem(item.illustration)}
                     onMouseLeave={() => setHoveredItem(null)}
                   >
                     <Link
                       href={item.href}
                       onClick={onClose}
-                      className="text-2xl font-medium text-green-800 hover:text-green-900 transition-colors duration-300 block"
+                      className="text-4xl font-semibold text-green-800 hover:text-green-900 transition-colors duration-300 block"
                     >
                       {item.label}
                     </Link>

@@ -12,8 +12,8 @@ import type { CarouselSlide } from "@/types/carousel"
 const slides: CarouselSlide[] = [
   {
     id: "logistics",
-    title: "Reliable Logistics Solutions",
-    subtitle: "Professional shipping and freight services nationwide",
+    title: "Red Square Transportation",
+    subtitle: "Professional shipping and freight services",
     backgroundVideo:
       "https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2F6169116-uhd_3840_2160_25fps.mp4?alt=media&token=091436a0-91ee-4228-9e18-b9a7dd83ee2f",
     backgroundColor: "#dc2626",
