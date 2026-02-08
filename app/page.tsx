@@ -23,7 +23,8 @@ const slides: CarouselSlide[] = [
     id: "freight",
     title: "Freight Excellence",
     subtitle: "Modern fleet, experienced drivers, on-time delivery",
-    backgroundVideo: "https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/homepage-carousel/4157778-hd_1920_1080_24fps.mp4",
+    backgroundVideo:
+      "https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2F6169116-uhd_3840_2160_25fps.mp4?alt=media&token=091436a0-91ee-4228-9e18-b9a7dd83ee2f",
     backgroundColor: "#1f2937",
     textColor: "#ffffff",
   },
@@ -31,7 +32,8 @@ const slides: CarouselSlide[] = [
     id: "warehousing",
     title: "Secure Warehousing",
     subtitle: "State-of-the-art storage and distribution facilities",
-    backgroundVideo: "https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/homepage-carousel/9856370-hd_1920_1080_30fps.mp4",
+    backgroundVideo:
+      "https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2F6169116-uhd_3840_2160_25fps.mp4?alt=media&token=091436a0-91ee-4228-9e18-b9a7dd83ee2f",
     backgroundColor: "#374151",
     textColor: "#ffffff",
   },
@@ -39,7 +41,8 @@ const slides: CarouselSlide[] = [
     id: "planning",
     title: "Strategic Planning",
     subtitle: "Optimize your supply chain with our expertise",
-    backgroundVideo: "https://gtcyljdmvzaipvimfjhr.supabase.co/storage/v1/object/public/assets-media/homepage-carousel/6561844-uhd_3840_2160_25fps.mp4",
+    backgroundVideo:
+      "https://firebasestorage.googleapis.com/v0/b/readyaimgo-clients-temp.firebasestorage.app/o/redsquaretransportation%2F6169116-uhd_3840_2160_25fps.mp4?alt=media&token=091436a0-91ee-4228-9e18-b9a7dd83ee2f",
     backgroundColor: "#059669",
     textColor: "#ffffff",
   },

@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle, Loader2 } from "lucide-react"
-import { supabase } from "@/lib/supabase"
 import type { CreateCustomerData } from "@/types/database"
 
 export function CustomerSignupForm() {
@@ -31,13 +30,18 @@ export function CustomerSignupForm() {
     setError(null)
 
     try {
-      const { data, error } = await supabase.from("customers").insert([formData]).select().single()
+      const res = await fetch("/api/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json().catch(() => ({}))
 
-      if (error) {
-        if (error.code === "23505") {
+      if (!res.ok) {
+        if (res.status === 409 || data?.error?.includes("already exists")) {
           setError("A customer with this email already exists.")
         } else {
-          setError("Failed to create profile. Please try again.")
+          setError(data?.error ?? "Failed to create profile. Please try again.")
         }
         return
       }

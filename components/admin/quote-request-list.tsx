@@ -5,32 +5,40 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink } from "lucide-react"
-import { supabase } from "@/lib/supabase"
 import type { QuoteRequest } from "@/types/database"
 import { formatDistanceToNow } from "date-fns"
 
-export function QuoteRequestList() {
+interface QuoteRequestListProps {
+  adminToken?: string
+}
+
+export function QuoteRequestList({ adminToken }: QuoteRequestListProps) {
   const [quoteRequests, setQuoteRequests] = useState<QuoteRequest[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchQuoteRequests()
-  }, [])
+    if (adminToken) {
+      fetchQuoteRequests()
+    } else {
+      setIsLoading(false)
+    }
+  }, [adminToken])
 
   const fetchQuoteRequests = async () => {
+    if (!adminToken) return
     try {
-      const { data, error } = await supabase
-        .from("quote_requests")
-        .select(`
-          *,
-          customer:customers(*)
-        `)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      setQuoteRequests(data || [])
+      const res = await fetch("/api/admin/quote-requests", {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      })
+      if (!res.ok) {
+        setQuoteRequests([])
+        return
+      }
+      const data = await res.json()
+      setQuoteRequests(data.quote_requests || [])
     } catch (error) {
       console.error("Error fetching quote requests:", error)
+      setQuoteRequests([])
     } finally {
       setIsLoading(false)
     }

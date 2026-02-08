@@ -42,16 +42,25 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
   const [showDropoffDropdown, setShowDropoffDropdown] = useState(false)
   const pickupRef = useRef<HTMLInputElement>(null)
   const dropoffRef = useRef<HTMLInputElement>(null)
+  const pickupDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dropoffDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Fetch city suggestions
+  const DEBOUNCE_MS = 300
+
+  // Fetch city suggestions (server expects q.length >= 2)
   const fetchCities = async (q: string, setSuggestions: (cities: any[]) => void) => {
-    if (!q) {
+    const trimmed = (q || "").trim()
+    if (trimmed.length < 2) {
       setSuggestions([])
       return
     }
-    const res = await fetch(`/api/cities?q=${encodeURIComponent(q)}`)
-    const data = await res.json()
-    setSuggestions(data.cities || [])
+    try {
+      const res = await fetch(`/api/cities?q=${encodeURIComponent(trimmed)}`)
+      const data = await res.json()
+      setSuggestions(data.cities || [])
+    } catch {
+      setSuggestions([])
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -160,15 +169,18 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
 
                   <h3 className="text-xl font-semibold mb-2">Thank you!</h3>
                   <p className="text-gray-600 mb-6">
-                    Your quote request has been submitted successfully. We've sent a confirmation email with next steps.
+                    Your quote request has been submitted successfully.
+                    {checkoutUrl ? " We've sent a confirmation email with next steps." : ""}
                   </p>
 
                   <div className="space-y-3">
-                    <Button onClick={handlePayNow} className="w-full bg-red-600 hover:bg-red-700 text-white">
-                      Pay Deposit Now ($100)
-                    </Button>
+                    {checkoutUrl && (
+                      <Button onClick={handlePayNow} className="w-full bg-red-600 hover:bg-red-700 text-white">
+                        Pay Deposit Now ($100)
+                      </Button>
+                    )}
                     <Button onClick={handleClose} variant="outline" className="w-full bg-transparent">
-                      I'll Pay Later
+                      {checkoutUrl ? "I'll Pay Later" : "Close"}
                     </Button>
                   </div>
 
@@ -238,8 +250,12 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                         value={formData.pickup_location}
                         onChange={e => {
                           handleChange(e)
-                          fetchCities(e.target.value, setPickupSuggestions)
                           setShowPickupDropdown(true)
+                          if (pickupDebounceRef.current) clearTimeout(pickupDebounceRef.current)
+                          pickupDebounceRef.current = setTimeout(
+                            () => fetchCities(e.target.value, setPickupSuggestions),
+                            DEBOUNCE_MS
+                          )
                         }}
                         onFocus={() => {
                           if (formData.pickup_location) fetchCities(formData.pickup_location, setPickupSuggestions)
@@ -279,8 +295,12 @@ export function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
                         value={formData.dropoff_location}
                         onChange={e => {
                           handleChange(e)
-                          fetchCities(e.target.value, setDropoffSuggestions)
                           setShowDropoffDropdown(true)
+                          if (dropoffDebounceRef.current) clearTimeout(dropoffDebounceRef.current)
+                          dropoffDebounceRef.current = setTimeout(
+                            () => fetchCities(e.target.value, setDropoffSuggestions),
+                            DEBOUNCE_MS
+                          )
                         }}
                         onFocus={() => {
                           if (formData.dropoff_location) fetchCities(formData.dropoff_location, setDropoffSuggestions)

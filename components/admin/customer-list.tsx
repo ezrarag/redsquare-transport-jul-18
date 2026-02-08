@@ -4,28 +4,35 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { supabase } from "@/lib/supabase"
 import type { Customer } from "@/types/database"
 import { formatDistanceToNow } from "date-fns"
 
 interface CustomerListProps {
+  adminToken?: string
   onSelectCustomer: (customer: Customer) => void
 }
 
-export function CustomerList({ onSelectCustomer }: CustomerListProps) {
+export function CustomerList({ adminToken, onSelectCustomer }: CustomerListProps) {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchCustomers()
-  }, [])
+    if (adminToken) fetchCustomers()
+    else setIsLoading(false)
+  }, [adminToken])
 
   const fetchCustomers = async () => {
+    if (!adminToken) return
     try {
-      const { data, error } = await supabase.from("customers").select("*").order("created_at", { ascending: false })
-
-      if (error) throw error
-      setCustomers(data || [])
+      const res = await fetch("/api/admin/customers", {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      })
+      if (!res.ok) {
+        setCustomers([])
+        return
+      }
+      const data = await res.json()
+      setCustomers(data.customers || [])
     } catch (error) {
       console.error("Error fetching customers:", error)
     } finally {

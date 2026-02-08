@@ -17,15 +17,23 @@ import type { Customer } from "@/types/database"
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [password, setPassword] = useState("")
+  const [adminToken, setAdminToken] = useState("")
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Temporary hardcoded authentication - replace with real auth later
-    if (password === "admin123") {
-      setIsAuthenticated(true)
-    } else {
+    try {
+      const res = await fetch("/api/admin/quote-requests", {
+        headers: { Authorization: `Bearer ${password}` },
+      })
+      if (res.ok) {
+        setAdminToken(password)
+        setIsAuthenticated(true)
+      } else {
+        alert("Invalid password")
+      }
+    } catch {
       alert("Invalid password")
     }
   }
@@ -80,7 +88,7 @@ export default function AdminPage() {
           </TabsList>
 
           <TabsContent value="quote-requests">
-            <QuoteRequestList key={refreshKey} />
+            <QuoteRequestList key={refreshKey} adminToken={adminToken} />
           </TabsContent>
 
           <TabsContent value="customers" className="space-y-8">
@@ -93,17 +101,17 @@ export default function AdminPage() {
                     onCancel={() => setSelectedCustomer(null)}
                   />
                 ) : (
-                  <CustomerList onSelectCustomer={setSelectedCustomer} />
+                  <CustomerList adminToken={adminToken} onSelectCustomer={setSelectedCustomer} />
                 )}
               </div>
               <div>
-                <QuoteList key={refreshKey} />
+                <QuoteList key={refreshKey} adminToken={adminToken} />
               </div>
             </div>
           </TabsContent>
 
           <TabsContent value="quotes">
-            <QuoteList key={refreshKey} />
+            <QuoteList key={refreshKey} adminToken={adminToken} />
           </TabsContent>
         </Tabs>
       </div>

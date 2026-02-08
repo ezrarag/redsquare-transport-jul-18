@@ -1,26 +1,22 @@
-import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const q = searchParams.get("q")?.toLowerCase() || "";
+  try {
+    const { searchParams } = new URL(req.url)
+    const raw = searchParams.get("q")
+    const q = (typeof raw === "string" ? raw : "").trim()
 
-  // Fetch cities, optionally filter by search query
-  let query = supabase
-    .from("cities")
-    .select("id, name, state, available")
-    .order("name", { ascending: true })
-    .limit(20);
+    if (q.length < 2) {
+      return NextResponse.json({ cities: [] })
+    }
 
-  if (q) {
-    query = query.ilike("name", `%${q}%`);
+    return NextResponse.json({ cities: [] })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error"
+    console.error("[cities] error:", message)
+    return NextResponse.json(
+      { error: "Internal server error", cities: [] },
+      { status: 500 }
+    )
   }
-
-  const { data, error } = await query;
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ cities: data });
-} 
+}

@@ -1,13 +1,13 @@
 # Red Square Transport - Customer Management & Payment System
 
-A React + TypeScript + Next.js application with Supabase (PostgreSQL) and Stripe integration for managing customers and processing payments.
+A React + TypeScript + Next.js application with Firebase (Firestore) and Stripe integration for managing quote requests and payments.
 
 ## Features
 
 - **Customer Signup**: Customers can create profiles with contact information
 - **Admin Dashboard**: Manage customers and create quotes with payment links
 - **Stripe Integration**: Secure payment processing with webhooks
-- **Database**: PostgreSQL via Supabase with proper schema design
+- **Database**: Firebase Firestore (quote_requests, quotes, customers collections)
 - **TypeScript**: Full type safety throughout the application
 
 ## Setup Instructions
@@ -20,12 +20,11 @@ Copy `.env.example` to `.env.local` and fill in your values:
 cp .env.example .env.local
 \`\`\`
 
-### 2. Supabase Setup
+### 2. Firebase Setup
 
-1. Create a new Supabase project at [supabase.com](https://supabase.com)
-2. Run the SQL schema from `supabase/schema.sql` in your Supabase SQL editor
-3. Get your project URL and anon key from Settings > API
-4. Get your service role key from Settings > API (keep this secret!)
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+2. Enable Firestore and create a service account (Project Settings > Service accounts > Generate new private key)
+3. Set in `.env.local`: `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (use `\n` for newlines in the key)
 
 ### 3. Stripe Setup
 
@@ -104,7 +103,7 @@ npm run dev
 
 ## Future Enhancements
 
-- Implement proper user authentication (Supabase Auth)
+- Implement proper user authentication (e.g. Firebase Auth)
 - Add email notifications for quotes
 - Add customer dashboard for viewing quotes
 - Implement role-based access control
@@ -114,7 +113,7 @@ npm run dev
 
 This complete project provides:
 
-1. ✅ **Customer Signup Form** with Supabase integration
+1. ✅ **Customer Signup Form** with Firebase Firestore
 2. ✅ **Admin Dashboard** with hardcoded authentication
 3. ✅ **Quote Management** with Stripe payment links
 4. ✅ **Stripe Webhook** handling for payment status updates

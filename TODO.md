@@ -12,13 +12,12 @@
 - [x] Implement city autocomplete for pickup/dropoff locations (with available/greyed-out cities)
 - [x] Connect frontend to backend for available cities
 
-## Supabase Integration
-- [ ] Confirm quote requests are stored in Supabase
-- [x] Ensure .env.local is set up with Supabase keys
-- [x] Improve error handling for missing Supabase environment variables
+## Firebase (Firestore) Integration
+- [x] Quote requests stored in Firestore
+- [x] Admin quote requests and quotes use Firestore
+- [x] Stripe webhook updates Firestore documents
 - [ ] Redirect users to dashboard after quote submission
-- [ ] Fix us_cities_conformed.csv for Supabase import (Supabase error with id column)
-- [ ] Add jobs table to Supabase for dynamic careers page
+- [ ] Add jobs collection in Firestore for dynamic careers page (optional)
 
 ## Client Dashboard
 - [ ] Create a dashboard page for clients to view their quotes/requests
@@ -35,7 +34,7 @@
 - [x] Make floating contact button functional on careers page
 - [x] Make "Apply Now" button functional on careers page
 - [x] Ensure careers page menu works like landing page
-- [ ] Ensure application submissions are sent to company email and stored in Supabase
+- [ ] Ensure application submissions are sent to company email and stored in Firestore
 - [ ] Create a QR code that links to the Careers page
 - [ ] Integrate QR code generator into admin tools with options for download as image or other mediums (e.g., copy, share, print)
 - [ ] Allow admins to generate QR codes for any page or campaign (e.g., quote form, careers, custom URLs)
@@ -65,6 +64,6 @@
 
 **Next Session:**
 - Focus on implementing dynamic jobs table for careers page
-- Complete Supabase integration for job applications and contact form submissions
+- Complete backend integration for job applications and contact form submissions
 - Work on QR code generation features
 - Connect contact modal form to backend/email service 

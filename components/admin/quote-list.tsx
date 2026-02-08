@@ -5,30 +5,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink } from "lucide-react"
-import { supabase } from "@/lib/supabase"
 import type { Quote } from "@/types/database"
 import { formatDistanceToNow } from "date-fns"
 
-export function QuoteList() {
+interface QuoteListProps {
+  adminToken?: string
+}
+
+export function QuoteList({ adminToken }: QuoteListProps) {
   const [quotes, setQuotes] = useState<Quote[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    fetchQuotes()
-  }, [])
+    if (adminToken) fetchQuotes()
+    else setIsLoading(false)
+  }, [adminToken])
 
   const fetchQuotes = async () => {
+    if (!adminToken) return
     try {
-      const { data, error } = await supabase
-        .from("quotes")
-        .select(`
-          *,
-          customer:customers(*)
-        `)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      setQuotes(data || [])
+      const res = await fetch("/api/admin/quotes", {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      })
+      if (!res.ok) {
+        setQuotes([])
+        return
+      }
+      const data = await res.json()
+      setQuotes(data.quotes || [])
     } catch (error) {
       console.error("Error fetching quotes:", error)
     } finally {

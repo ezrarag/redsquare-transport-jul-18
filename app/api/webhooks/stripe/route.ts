@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
-import { supabaseAdmin } from "@/lib/supabase"
-import { sendPaymentConfirmation } from "@/lib/email"
+import { getFirestoreAdmin, hasFirebase } from "@/lib/firebaseAdmin"
 import { headers } from "next/headers"
 
 export async function POST(request: NextRequest) {
@@ -23,71 +22,65 @@ export async function POST(request: NextRequest) {
 
   try {
     switch (event.type) {
-      case "checkout.session.completed":
+      case "checkout.session.completed": {
         const session = event.data.object
         const metadata = session.metadata
         const type = metadata?.type || "quote"
+        if (!hasFirebase()) {
+          console.warn("Stripe webhook: Firebase not configured, skipping document update")
+          break
+        }
+        const db = getFirestoreAdmin()
 
         if (type === "quote_request" && metadata?.quote_request_id) {
-          // Handle quote request payment
           const quoteRequestId = metadata.quote_request_id
-
-          // Update quote request status to paid
-          const { data: quoteRequest, error: updateError } = await supabaseAdmin
-            .from("quote_requests")
-            .update({
+          const ref = db.collection("quote_requests").doc(quoteRequestId)
+          const snap = await ref.get()
+          if (snap.exists) {
+            await ref.update({
               status: "paid",
               stripe_payment_intent_id: session.payment_intent as string,
+              updatedAt: new Date().toISOString(),
             })
-            .eq("id", quoteRequestId)
-            .select(`
-              *,
-              customer:customers(*)
-            `)
-            .single()
-
-          if (updateError) {
-            console.error("Failed to update quote request status:", updateError)
-          } else if (quoteRequest?.customer) {
-            // Send payment confirmation email
-            await sendPaymentConfirmation({
-              name: quoteRequest.customer.name,
-              email: quoteRequest.customer.email,
-              amount: quoteRequest.estimated_amount || 0,
-              quote_request_id: quoteRequest.id,
-            })
+            const data = snap.data()
+            try {
+              const { sendPaymentConfirmation } = await import("@/lib/email")
+              await sendPaymentConfirmation({
+                name: (data?.full_name ?? data?.name ?? "") as string,
+                email: (data?.email ?? "") as string,
+                amount: (data?.estimated_amount as number) ?? 0,
+                quote_request_id: quoteRequestId,
+              })
+            } catch (e) {
+              console.error("Payment confirmation email failed:", e)
+            }
           }
         } else if (type === "quote" && metadata?.quote_id) {
-          // Handle admin-created quote payment (existing logic)
           const quoteId = metadata.quote_id
-
-          const { data: quote, error: updateError } = await supabaseAdmin
-            .from("quotes")
-            .update({
+          const ref = db.collection("quotes").doc(quoteId)
+          const snap = await ref.get()
+          if (snap.exists) {
+            await ref.update({
               status: "paid",
               stripe_payment_intent_id: session.payment_intent as string,
+              updated_at: new Date().toISOString(),
             })
-            .eq("id", quoteId)
-            .select(`
-              *,
-              customer:customers(*)
-            `)
-            .single()
-
-          if (updateError) {
-            console.error("Failed to update quote status:", updateError)
-          } else if (quote?.customer) {
-            // Send payment confirmation email for admin quotes
-            await sendPaymentConfirmation({
-              name: quote.customer.name,
-              email: quote.customer.email,
-              amount: quote.amount,
-              quote_request_id: quote.id,
-            })
+            const data = snap.data()
+            try {
+              const { sendPaymentConfirmation } = await import("@/lib/email")
+              await sendPaymentConfirmation({
+                name: (data?.customer_name ?? "") as string,
+                email: (data?.customer_email ?? "") as string,
+                amount: (data?.amount as number) ?? 0,
+                quote_request_id: quoteId,
+              })
+            } catch (e) {
+              console.error("Payment confirmation email failed:", e)
+            }
           }
         }
         break
-
+      }
       default:
         console.log(`Unhandled event type: ${event.type}`)
     }

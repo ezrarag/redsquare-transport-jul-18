@@ -1,6 +1,14 @@
-import { Resend } from "resend"
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy-load Resend only when sending (avoids build-time init when RESEND_API_KEY is missing)
+async function getResend(): Promise<InstanceType<typeof import("resend").Resend> | null> {
+  const key = process.env.RESEND_API_KEY
+  if (!key) return null
+  try {
+    const { Resend } = await import("resend")
+    return new Resend(key)
+  } catch {
+    return null
+  }
+}
 
 export async function sendAdminNotification(quoteRequest: {
   id: string
@@ -12,9 +20,13 @@ export async function sendAdminNotification(quoteRequest: {
   notes?: string
 }) {
   try {
+    const resend = await getResend()
+    if (!resend || !process.env.ADMIN_EMAIL) {
+      return { success: false, error: "Email not configured" }
+    }
     const { data, error } = await resend.emails.send({
       from: "Red Square Transport <noreply@redsquaretransport.com>",
-      to: [process.env.ADMIN_EMAIL!],
+      to: [process.env.ADMIN_EMAIL],
       subject: "New Quote Request Received",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -66,6 +78,8 @@ export async function sendCustomerConfirmation(customer: {
   quote_request_id: string
 }) {
   try {
+    const resend = await getResend()
+    if (!resend) return { success: false, error: "Email not configured" }
     const { data, error } = await resend.emails.send({
       from: "Red Square Transport <noreply@redsquaretransport.com>",
       to: [customer.email],
@@ -126,6 +140,8 @@ export async function sendPaymentConfirmation(customer: {
   quote_request_id: string
 }) {
   try {
+    const resend = await getResend()
+    if (!resend) return { success: false, error: "Email not configured" }
     const { data, error } = await resend.emails.send({
       from: "Red Square Transport <noreply@redsquaretransport.com>",
       to: [customer.email],

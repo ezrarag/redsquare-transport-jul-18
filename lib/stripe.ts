@@ -1,7 +1,20 @@
 import Stripe from "stripe"
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-06-20",
+let _stripe: Stripe | null = null
+
+function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY
+    if (!key) throw new Error("STRIPE_SECRET_KEY is not set")
+    _stripe = new Stripe(key, { apiVersion: "2024-06-20" })
+  }
+  return _stripe
+}
+
+export const stripe = new Proxy({} as Stripe, {
+  get(_, prop) {
+    return (getStripe() as Record<string, unknown>)[prop as string]
+  },
 })
 
 export const createCheckoutSession = async (
@@ -11,7 +24,8 @@ export const createCheckoutSession = async (
   serviceDescription: string,
   type: "quote" | "quote_request" = "quote",
 ) => {
-  const session = await stripe.checkout.sessions.create({
+  const stripeClient = getStripe()
+  const session = await stripeClient.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: [
       {
