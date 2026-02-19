@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import Link from "next/link"
 import { CustomerList } from "@/components/admin/customer-list"
 import { QuoteForm } from "@/components/admin/quote-form"
 import { QuoteList } from "@/components/admin/quote-list"
@@ -78,6 +79,9 @@ export default function AdminPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
           <p className="text-gray-600 mt-2">Manage customers, quote requests, and quotes</p>
+          <Button asChild variant="outline" className="mt-4">
+            <Link href="/admin/careers">Open Career Applications</Link>
+          </Button>
         </div>
 
         <Tabs defaultValue="quote-requests" className="space-y-8">

@@ -41,6 +41,16 @@ const menuItems = [
     href: "/contact",
     illustration: "contact"
   },
+  {
+    label: "Admin",
+    href: "/admin",
+    illustration: "info",
+  },
+  {
+    label: "Admin Careers",
+    href: "/admin/careers",
+    illustration: "careers",
+  },
 ]
 
 export function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
